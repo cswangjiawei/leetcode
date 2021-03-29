@@ -28,6 +28,8 @@ public:
             }
             cur = cur->next;
         }
-        return pre_head->next;
+        ListNode* result = pre_head->next;
+        delete pre_head;
+        return result;
     }
 };
