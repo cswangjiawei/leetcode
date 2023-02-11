@@ -11,11 +11,7 @@ public:
     }
 
     int quick_sort(vector<int>& nums, int low, int high, int kk) {
-        int ans = 0;
-
-        if (low == kk && low==high) {
-            return nums[low];
-        }
+        int ans = nums[low];
         if (low < high) {
             int pivot = partition(nums, low, high);
             if (pivot == kk) {
