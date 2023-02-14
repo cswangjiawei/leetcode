@@ -1,41 +1,38 @@
 class Solution {
 public:
     bool wordBreak(string s, vector<string>& wordDict) {
-        unordered_set<string> wordSet;
-        for(auto &word: wordDict) {
-            wordSet.insert(word);
+        unordered_set<string> word_set;
+        for(string& word: wordDict) {
+            word_set.insert(word);
         }
-        
-        vector<bool> dy_vec(s.size());
-        if (wordSet.find(s.substr(0,1)) != wordSet.end()) {
+
+        int n = static_cast<int>(s.size());
+        vector<bool> dy_vec(n, false);
+
+        string s_0 = s.substr(0, 1);
+        if (word_set.find(s_0) != word_set.end()) {
             dy_vec[0] = true;
         }
-        for(int i=1; i < s.size(); ++i) {
-            for(int j=0; j<=i; ++j) {
-                if(j < i) {
-                    auto tmp = s.substr(j+1, i-j);
-                    bool is_in;
-                    if(wordSet.find(tmp) != wordSet.end()) {
-                        is_in = true;
-                    } else {
-                        is_in = false;
-                    }
-                    dy_vec[i] = (dy_vec[j] && is_in);
-                    if (dy_vec[i]) {
-                        break;
-                    }
-                } else {
-                    auto tmp = s.substr(0, i+1);
-                     if(wordSet.find(tmp) != wordSet.end()) {
-                        dy_vec[i] = true;
-                        break;
-                    }
-                }
 
+        for(int i=1; i<n; ++i) {
+            string si = s.substr(0, i+1);
+            if (word_set.find(si) != word_set.end()) {
+                dy_vec[i] = true;
+                continue;
+            }
+            for (int j=0; j<i; ++j) {
+                if (dy_vec[i]) {
+                    break;
+                }
+                string sj = s.substr(j+1, i-j);
+                bool flag = false;
+                if (word_set.find(sj) != word_set.end()) {
+                    flag = true;
+                }
+                dy_vec[i] = dy_vec[j] && flag;
             }
         }
-        return dy_vec[s.size()-1];
-        
-    }
+        return dy_vec[n-1];
 
+    }
 };
