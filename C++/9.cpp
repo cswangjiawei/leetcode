@@ -1,34 +1,17 @@
-#include <vector>
-
 class Solution {
 public:
     bool isPalindrome(int x) {
-        if (x < 0)
-        {
+        if (x < 0 || (x % 10 == 0 && x != 0)) {
             return false;
         }
-        vector<int> vec;
-        int quotient = 0;
-        int remainder = 0;
-        while (x)
-        {
-            quotient = x / 10;
-            remainder = x % 10;
-            vec.emplace_back(remainder);
-            x = quotient;
+        
+        int reverse_member = 0;
+        while (x > reverse_member) {
+            int remainder = x % 10;
+            x = x / 10;
+            reverse_member = reverse_member * 10 + remainder;
         }
 
-        int i = 0;
-        int j = vec.size() - 1;
-        while ( i <= j && i < vec.size() && j < vec.size())
-        {
-            if (vec[i] != vec[j])
-            {
-                return false;
-            }
-            ++i;
-            --j;
-        }
-        return true;
+        return x == reverse_member || x == reverse_member/10;
     }
 };
