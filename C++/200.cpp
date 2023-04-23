@@ -69,7 +69,7 @@ public:
         if (parent_x != parent_y) {
             --count;
             if (rank[parent_x] < rank[parent_y]) {
-                swap(rank[parent_x], rank[parent_y]);
+                swap(parent_x, parent_y);
             }
             parent[parent_y] = parent_x;
             if (rank[parent_x] == rank[parent_y]) {
