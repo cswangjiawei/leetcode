@@ -24,3 +24,26 @@ public:
         return false;
     }
 };
+
+
+class Solution {
+public:
+    bool increasingTriplet(vector<int>& nums) {
+        int first = INT_MAX;
+        int second = INT_MAX;
+
+        for(int num: nums) {
+            if (num > second) {
+                return true;
+            }
+            if (num > first) {
+                second = num;
+                continue;
+            }
+            first = num;
+
+        }
+
+        return false;
+    }
+};
