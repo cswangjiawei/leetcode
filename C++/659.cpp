@@ -25,3 +25,68 @@ public:
         return true;
     }
 };
+
+
+class Solution {
+public:
+    bool isPossible(vector<int>& nums) {
+        unordered_map<int, int> count_mp;
+        unordered_map<int, int> end_mp;
+
+        for (int num: nums) {
+            ++count_mp[num];
+        }
+
+        for (int num: nums) {
+            if (count_mp[num] == 0) continue;
+            if (end_mp[num-1]) {
+                ++end_mp[num];
+                --end_mp[num-1];
+                --count_mp[num];
+            } else {
+                int cnt_1 = count_mp[num+1];
+                int cnt_2 = count_mp[num+2];
+                if (cnt_1 && cnt_2) {
+                    ++end_mp[num+2];
+                    --count_mp[num];
+                    --count_mp[num+1];
+                    --count_mp[num+2];
+                } else {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+};class Solution {
+public:
+    bool isPossible(vector<int>& nums) {
+        unordered_map<int, int> count_mp;
+        unordered_map<int, int> end_mp;
+
+        for (int num: nums) {
+            ++count_mp[num];
+        }
+
+        for (int num: nums) {
+            if (count_mp[num] == 0) continue;
+            if (end_mp[num-1]) {
+                ++end_mp[num];
+                --end_mp[num-1];
+                --count_mp[num];
+            } else {
+                int cnt_1 = count_mp[num+1];
+                int cnt_2 = count_mp[num+2];
+                if (cnt_1 && cnt_2) {
+                    ++end_mp[num+2];
+                    --count_mp[num];
+                    --count_mp[num+1];
+                    --count_mp[num+2];
+                } else {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+};
