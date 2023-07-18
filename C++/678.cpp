@@ -94,3 +94,32 @@ public:
         return dp[0][n-1];
     }
 };
+
+class Solution {
+public:
+    bool checkValidString(string s) {
+        int max_left = 0;
+        int min_left = 0;
+        for (char &ch: s) {
+            if (ch == '(') {
+                ++max_left;
+                ++min_left;
+                continue;
+            }
+            if (ch == '*') {
+                if (min_left > 0) {
+                    --min_left;
+                }
+                ++max_left;
+                continue;
+            }
+            if (ch == ')') {
+                if (min_left)
+                    --min_left;
+                --max_left;
+                if (max_left<0) return false;
+            }
+        }
+        return min_left == 0;
+    }
+};
