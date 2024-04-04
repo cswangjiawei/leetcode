@@ -22,3 +22,34 @@ public:
         return pre;
     }
 };
+
+
+class Solution {
+public:
+    ListNode* reverseList(ListNode* head) {
+        ListNode* dummy = new ListNode();
+        ListNode* cur = head;
+        while(cur) {
+            ListNode* temp = cur->next;
+            cur->next = dummy->next;
+            dummy->next = cur;
+            cur = temp;
+        }
+        return dummy->next;
+
+    }
+};
+
+class Solution {
+public:
+    ListNode* reverseList(ListNode* head) {
+        if (head==nullptr || head->next==nullptr) {
+            return head;
+        }
+        ListNode* new_head = reverseList(head->next);
+        head->next->next = head;
+        head->next = nullptr;
+        return new_head;
+
+    }
+};
