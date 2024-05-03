@@ -26,3 +26,36 @@ public:
         sem_post(&sem_H);
     }
 };
+
+
+class H2O {
+public:
+    std::condition_variable cond;
+    std::mutex mutx;
+    int num;
+    H2O():num(2) {
+        
+    }
+
+    void hydrogen(function<void()> releaseHydrogen) {
+        
+        // releaseHydrogen() outputs "H". Do not change or remove this line.
+        std::unique_lock<std::mutex> lk(mutx);
+        cond.wait(lk, [&]{return num > 0;});
+        releaseHydrogen();
+        --num;
+        if (num == 0) {
+            cond.notify_all();
+        }
+    }
+
+    void oxygen(function<void()> releaseOxygen) {
+        
+        // releaseOxygen() outputs "O". Do not change or remove this line.
+        std::unique_lock<std::mutex> lk(mutx);
+        cond.wait(lk, [&] {return num == 0;});
+        releaseOxygen();
+        num += 2;
+        cond.notify_all();
+    }
+};
