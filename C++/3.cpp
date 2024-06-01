@@ -28,3 +28,33 @@ public:
 
     }
 };
+
+
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        unordered_set<char> set1;
+        int left = 0;
+        int ans = 0;
+        for (auto& ch: s) {
+            if (set1.count(ch)==0) {
+                set1.insert(ch);
+            } else {
+                int set_len = set1.size();
+                if (set_len > ans) {
+                    ans = set_len;
+                }
+                while(set1.count(ch)) {
+                    set1.erase(s[left++]);
+                }
+                set1.insert(ch);
+            }
+        }
+
+        if (set1.size() > ans) {
+            ans = set1.size();
+        }
+
+        return ans;
+    }
+};
