@@ -61,3 +61,73 @@ public:
         return dummy->next;
     }
 };
+
+
+class Solution {
+public:
+    ListNode* sortList(ListNode* head) {
+        if (!head || !head->next) {
+            return head;
+        }
+
+        int length = 0;
+        ListNode* cur = head;
+        while (cur) {
+            ++length;
+            cur = cur->next;
+        }
+        ListNode* dummy = new ListNode();
+        dummy->next = head;
+
+        for (int sub_length = 1; sub_length<length; sub_length<<=1) {
+            ListNode* prev_tail = dummy;
+            ListNode* head1 = dummy->next;
+            while (head1) {
+                cur = head1;
+                ListNode* prev = nullptr;
+                for (int i=0; i<sub_length && cur; ++i) {
+                    prev = cur;
+                    cur = cur->next;
+                }
+                prev->next = nullptr;
+                ListNode* head2 = cur;
+                for (int i=0; i<sub_length && cur; ++i) {
+                    prev = cur;
+                    cur = cur->next;
+                }
+                if (cur) {
+                    prev->next = nullptr;
+                }
+                ListNode* merge_head = merge(head1, head2);
+                prev_tail->next = merge_head;
+                while (merge_head->next) {
+                    merge_head = merge_head->next;
+                }
+                prev_tail = merge_head;
+                head1 = cur;
+            }
+        }
+        return dummy->next; 
+    }
+
+    ListNode* merge(ListNode* head1, ListNode* head2) {
+        ListNode* dummy = new ListNode();
+        ListNode* cur = dummy;
+        while (head1 && head2) {
+            if (head1->val < head2->val) {
+                cur->next = head1;
+                cur = head1;
+                head1 = head1->next;
+            } else {
+                cur->next = head2;
+                cur = head2;
+                head2 = head2->next;
+            }
+        }
+        if (head2) {
+            head1 = head2;
+        }
+        cur->next = head1;
+        return dummy->next;
+    }
+};
