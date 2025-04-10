@@ -26,7 +26,9 @@ public:
         }
 
         slow->next = slow->next->next;
-        return dummy->next;
+        auto ans = dummy->next;
+        delete dummy;
+        return ans;
 
     }
 };
