@@ -58,7 +58,9 @@ public:
             cur = tmp;
         }
 
-        return dummy->next;
+        ListNode* ans = dummy->next;
+        delete dummy;
+        return ans;
 
     }
 };
