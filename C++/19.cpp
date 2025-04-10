@@ -25,9 +25,11 @@ public:
             slow = slow->next;
         }
 
+        auto node = slow->next;
         slow->next = slow->next->next;
         auto ans = dummy->next;
         delete dummy;
+        delete node;
         return ans;
 
     }
