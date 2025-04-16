@@ -93,3 +93,82 @@ class DLinkNode {
      * int param_1 = obj->get(key);
      * obj->put(key,value);
      */
+
+
+     class Node {
+        public:
+            int key;
+            int value;
+            int cnt;
+            int time;
+        public:
+            Node(int key, int value, int cnt, int time): key(key), value(value), cnt(cnt), time(time) {}
+            Node(int key, int value): key(key), value(value), cnt(1), time(0) {}
+            Node(): key(0), value(0), cnt(1), time(0) {}
+        
+            bool operator < (const Node& rhs) const {
+                return cnt == rhs.cnt ? time < rhs.time : cnt < rhs.cnt;
+            }
+        }; 
+        
+        class LFUCache {
+            std::unordered_map<int, Node> mp;
+            std::set<Node> cache;
+            int capacity;
+            int size;
+            int time;
+        public:
+            LFUCache(int capacity): capacity(capacity), size(0), time(0) {
+                mp.clear();
+                cache.clear();
+            }
+            
+            int get(int key) {
+                if (mp.count(key)) {
+                    Node node = mp[key];
+                    cache.erase(node);
+        
+                    ++time;
+                    node.time = time;
+                    ++node.cnt;
+                    cache.insert(node);
+                    mp[key] = node;
+                    return node.value;
+                } else {
+                    return -1;
+                }
+            }
+            
+            void put(int key, int value) {
+                if (mp.count(key)) {
+                    Node node = mp[key];
+                    
+                    cache.erase(node);
+                    node.value = value;
+                    ++time;
+                    node.time = time;
+                    ++node.cnt;
+                    cache.insert(node);
+                    mp[key] = node;
+                } else {
+                    if (size == capacity) {
+                        auto it = cache.begin();
+                        mp.erase(it->key);
+                        cache.erase(it);
+                        --size;
+                    }
+                    ++time;
+                    Node node(key, value, 1, time);
+                    cache.insert(node);
+                    mp.insert({key, node});
+                    ++size;
+                }
+            }
+        };
+        
+        /**
+         * Your LFUCache object will be instantiated and called as such:
+         * LFUCache* obj = new LFUCache(capacity);
+         * int param_1 = obj->get(key);
+         * obj->put(key,value);
+         */
