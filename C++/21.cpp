@@ -12,7 +12,7 @@ class Solution {
 public:
     ListNode* mergeTwoLists(ListNode* l1, ListNode* l2) {
         ListNode* dummy = new ListNode();
-        ListNode* cur = pre;
+        ListNode* cur = dummy;
         while (l1 && l2)
         {
             if (l1->val <= l2->val)
@@ -32,6 +32,9 @@ public:
             l1 = l2;
         }
         cur->next = l1;
-        return pre->next;
+
+        ListNode* ans = dummy->next;
+        delete dummy;
+        return ans;
     }
 };
